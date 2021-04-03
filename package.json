@@ -1,0 +1,11 @@
+{
+  "name": "control.voidfloat.com",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/voidfloat/control.voidfloat.com.git",
+  "author": "Mauricio Carnieletto <mauriciocarnieletto@brq.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "cd ./mock && yarn dev"
+  }
+}
