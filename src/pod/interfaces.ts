@@ -1,5 +1,8 @@
 export interface PingResult {
-  series: string;
-  host: string;
-  status: string;
+  isPod: boolean;
+  name?: string;
+  timestamp?: string;
+  series?: string;
+  host?: string;
+  status?: string;
 }

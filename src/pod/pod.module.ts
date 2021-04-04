@@ -1,7 +1,9 @@
 import { HttpModule, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import configuration from 'src/config/configuration';
 import { PodService } from './pod.service';
+import { PodController } from './pod.controller';
+import { CommunicationModule } from './communication/communication.module';
+import configuration from 'src/config/configuration';
 
 @Module({
   imports: [
@@ -12,7 +14,9 @@ import { PodService } from './pod.service';
     ConfigModule.forRoot({
       load: [configuration],
     }),
+    CommunicationModule,
   ],
+  controllers: [PodController],
   providers: [PodService],
   exports: [PodService],
 })

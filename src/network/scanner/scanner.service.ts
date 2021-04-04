@@ -54,10 +54,6 @@ export class ScannerService {
   }
 
   async filterPodsFromDevices(devices: DeviceI[]) {
-    return Promise.all(
-      devices.map(({ ip }) => {
-        return this.podService.ping(ip);
-      }),
-    );
+    return Promise.all(devices.map(({ ip }) => this.podService.ping(ip)));
   }
 }

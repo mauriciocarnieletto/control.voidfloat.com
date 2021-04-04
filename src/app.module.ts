@@ -5,8 +5,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { NetworkModule } from './network/network.module';
 import { ServiceModule } from './service/service.module';
-import { PodModule } from './pod/pod.module';
 import { SetupModule } from './setup/setup.module';
+import { PodModule } from './pod/pod.module';
 import configuration from './config/configuration';
 
 @Module({
