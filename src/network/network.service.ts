@@ -14,7 +14,7 @@ export class NetworkService {
   gateway: string;
 
   constructor(private scannerService: ScannerService) {
-    this.updateInfo();
+    // this.updateInfo();
   }
   /**
    * Updates device network info.

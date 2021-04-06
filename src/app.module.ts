@@ -7,6 +7,10 @@ import { NetworkModule } from './network/network.module';
 import { ServiceModule } from './service/service.module';
 import { SetupModule } from './setup/setup.module';
 import { PodModule } from './pod/pod.module';
+import { ClientModule } from './client/client.module';
+import { DatabaseModule } from './database/database.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -25,10 +29,14 @@ import configuration from './config/configuration';
       autoLoadEntities: true,
       synchronize: configuration().isDev,
     }),
+    DatabaseModule,
     PodModule,
     NetworkModule,
     ServiceModule,
     SetupModule,
+    ClientModule,
+    AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
