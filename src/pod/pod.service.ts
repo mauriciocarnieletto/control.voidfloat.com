@@ -1,8 +1,16 @@
-import { HttpService, Injectable } from '@nestjs/common';
+import { HttpService, Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Repository } from 'typeorm';
 import { CreatePodDto } from './dto/create-pod.dto';
 import { UpdatePodDto } from './dto/update-pod.dto';
-import { PingResult } from './interfaces';
+import { Pod } from './entities/pod.entity';
+import {
+  Command,
+  Commands,
+  InitialScreen,
+  PingResult,
+  PodParameters,
+} from './interfaces';
 
 @Injectable()
 export class PodService {
@@ -13,7 +21,13 @@ export class PodService {
   constructor(
     private httpService: HttpService,
     private configService: ConfigService,
+    @Inject('POD_REPOSITORY')
+    private podRepository: Repository<Pod>,
   ) {
+    this.init();
+  }
+
+  init() {
     const { port, protocol } = this.configService.get<{
       port: string;
       protocol: string;
@@ -23,23 +37,23 @@ export class PodService {
   }
 
   create(createPodDto: CreatePodDto) {
-    return 'This action adds a new pod';
+    return this.podRepository.create({ ...createPodDto });
   }
 
   findAll() {
-    return `This action returns all pod`;
+    return this.podRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} pod`;
+    return this.podRepository.findOne({ id });
   }
 
   update(id: number, updatePodDto: UpdatePodDto) {
-    return `This action updates a #${id} pod`;
+    return this.podRepository.update({ id }, { ...updatePodDto });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} pod`;
+    return this.podRepository.delete({ id });
   }
 
   getUrl(method: string, host?: string): string {
@@ -52,10 +66,45 @@ export class PodService {
         this.getUrl('ping', host),
       );
 
-      return { isPod: true, host };
+      return { isPod: true, host, ...pingResponse };
     } catch (error) {
       console.log(`Host ${host} is not a pod.`, error);
       return { isPod: false, host };
     }
+  }
+
+  async setConfig(config: PodParameters) {
+    return this.httpService.axiosRef.post(this.getUrl('setconfig'), config);
+  }
+
+  async sendCommands(command: Command) {
+    return this.httpService.axiosRef.post(this.getUrl('commands'), command);
+  }
+
+  async getTime(): Promise<Date> {
+    const {
+      data: { hours, minutes, seconds, day, month, year },
+    } = await this.httpService.axiosRef.get<{
+      hours: number;
+      minutes: number;
+      seconds: number;
+      day: number;
+      month: number;
+      year: number;
+    }>(this.getUrl('readhours'));
+
+    return new Date(year, month, day, hours, minutes, seconds);
+  }
+
+  async getMusic() {
+    return this.httpService.axiosRef.get<string>(
+      this.getUrl('readmusics?offset=0'),
+    );
+  }
+
+  async getStatus() {
+    return this.httpService.axiosRef.get<InitialScreen>(
+      this.getUrl('initialScreen'),
+    );
   }
 }

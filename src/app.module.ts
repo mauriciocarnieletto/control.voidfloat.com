@@ -11,6 +11,9 @@ import { ClientModule } from './client/client.module';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { PodCommandsModule } from './pod-commands/pod-commands.module';
+import { Pod } from './pod/entities/pod.entity';
+import { Client } from './client/entities/client.entity';
 import configuration from './config/configuration';
 
 @Module({
@@ -22,13 +25,6 @@ import configuration from './config/configuration';
     ConfigModule.forRoot({
       load: [configuration],
     }),
-    TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: '../resources/database/voidserver.db',
-      entities: ['dist/**/*.entity{js,ts}'],
-      autoLoadEntities: true,
-      synchronize: configuration().isDev,
-    }),
     DatabaseModule,
     PodModule,
     NetworkModule,
@@ -37,6 +33,7 @@ import configuration from './config/configuration';
     ClientModule,
     AuthModule,
     UsersModule,
+    PodCommandsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

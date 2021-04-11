@@ -9,5 +9,5 @@ export class Client {
   name: string;
 
   @Column()
-  avatarUrl: string;
+  avatarUrl?: string;
 }
