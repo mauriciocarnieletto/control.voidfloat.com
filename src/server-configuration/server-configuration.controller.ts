@@ -1,11 +1,26 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ServerConfigurationService } from './server-configuration.service';
 import { CreateServerConfigurationDto } from './dto/create-server-configuration.dto';
 import { UpdateServerConfigurationDto } from './dto/update-server-configuration.dto';
 
 @Controller('server-configuration')
 export class ServerConfigurationController {
-  constructor(private readonly serverConfigurationService: ServerConfigurationService) {}
+  constructor(
+    private readonly serverConfigurationService: ServerConfigurationService,
+  ) {}
+
+  @Get('/os-data')
+  findOSData() {
+    return this.serverConfigurationService.findOSData();
+  }
 
   @Post()
   create(@Body() createServerConfigurationDto: CreateServerConfigurationDto) {
@@ -14,21 +29,17 @@ export class ServerConfigurationController {
 
   @Get()
   findAll() {
-    return this.serverConfigurationService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.serverConfigurationService.findOne(+id);
+    return this.serverConfigurationService.find();
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateServerConfigurationDto: UpdateServerConfigurationDto) {
-    return this.serverConfigurationService.update(+id, updateServerConfigurationDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.serverConfigurationService.remove(+id);
+  update(
+    @Param('id') id: string,
+    @Body() updateServerConfigurationDto: UpdateServerConfigurationDto,
+  ) {
+    return this.serverConfigurationService.update(
+      +id,
+      updateServerConfigurationDto,
+    );
   }
 }

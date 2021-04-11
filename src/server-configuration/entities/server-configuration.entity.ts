@@ -3,26 +3,32 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class ServerConfiguration {
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Column()
   clientId: number;
 
-  @Column()
-  sshPort: number;
+  @Column({ nullable: true })
+  sshPort?: string;
 
-  @Column()
-  hostname: string;
+  @Column({ nullable: true })
+  hostname?: string;
 
-  @Column()
-  gatewayIp: string;
+  @Column({ nullable: true })
+  gatewayIp?: string;
 
-  @Column({ length: 500 })
-  localIp: string;
+  @Column({ nullable: true, length: 500 })
+  localIp?: string;
 
-  @Column({ length: 500 })
-  externalIp: string;
+  @Column({ nullable: true, length: 500 })
+  publicIp?: string;
 
-  @Column({ length: 500 })
-  podsNet: string;
+  @Column({ nullable: true, length: 500 })
+  subnet?: string;
+
+  @Column({ nullable: true, default: '/initialscreen', length: 500 })
+  podPingEndpoint?: string;
+
+  @Column({ nullable: true, default: process.env.VOID_HTTP_PORT })
+  podPort?: number;
 }

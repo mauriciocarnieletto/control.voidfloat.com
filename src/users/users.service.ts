@@ -14,12 +14,19 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
+    const usersWithSameEmail = await this.find({
+      where: { email: createUserDto.email },
+    });
+    if (usersWithSameEmail?.length > 0)
+      throw new Error('Já existe um usuário com este email');
+
     const user = new User();
     Object.assign(user, {
       ...createUserDto,
       password: await hash(createUserDto.password, 10),
     });
     const { password, ...userData } = await this.userRepository.save(user);
+
     return userData;
   }
 

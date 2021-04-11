@@ -4,18 +4,16 @@ import {
   Post,
   Body,
   Patch,
-  Param,
-  Delete,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 import { SetupService } from './setup.service';
-import { CreateSetupDto } from './dto/create-setup.dto';
-import { UpdateSetupDto } from './dto/update-setup.dto';
 import { CreateClientDto } from 'src/client/dto/create-client.dto';
 import { ClientService } from 'src/client/client.service';
 import { UsersService } from 'src/users/users.service';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt.guard';
+import { ServerConfigurationService } from 'src/server-configuration/server-configuration.service';
 
 @Controller('setup')
 export class SetupController {
@@ -23,6 +21,7 @@ export class SetupController {
     private readonly setupService: SetupService,
     private clientService: ClientService,
     private usersService: UsersService,
+    private serverConfigurationService: ServerConfigurationService,
   ) {}
 
   @Get('/start')
@@ -52,8 +51,28 @@ export class SetupController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/server')
-  getServerInitialData() {
-    return this.setupService.findAll();
+  async getServerInitialData(@Request() req) {
+    const serverConfigurations = await this.serverConfigurationService.find();
+    if (serverConfigurations?.length === 0) {
+      const {
+        hostname,
+        publicIp,
+        gatewayIp,
+        localIp,
+        subnet,
+        sshPort,
+      } = await this.serverConfigurationService.findOSData();
+      return this.serverConfigurationService.create({
+        clientId: req.user.clientId,
+        hostname,
+        publicIp,
+        gatewayIp,
+        localIp,
+        subnet,
+        sshPort,
+      });
+    }
+    return serverConfigurations[0];
   }
 
   @UseGuards(JwtAuthGuard)

@@ -13,30 +13,52 @@ export class ServerConfigurationService {
     private networkService: NetworkService,
   ) {}
 
-  getNetworkData() {
-    return { hostname: '', gateway: '', sshPort: '' };
+  async findOSData() {
+    const activeNetworkInterface = await this.networkService.getActiveInterface();
+    const networkInterfaces = await this.networkService.getNetworkInterfaces();
+    const hostname = await this.networkService.getHostName();
+    const gatewayIp = await this.networkService.getGateway();
+    const localIp = await this.networkService.getLocalIp();
+    const sshPort = await this.networkService.getSSHPort();
+    const publicIp = await this.networkService.getPublicIp();
+    const subnet = await this.networkService.getSubnet();
+    const isOnline = await this.networkService.getInternetConnectionStatus();
+
+    return {
+      hostname,
+      localIp,
+      gatewayIp,
+      publicIp,
+      subnet,
+      sshPort,
+      activeNetworkInterface,
+      networkInterfaces,
+      isOnline,
+    };
   }
 
-  create(createServerConfigurationDto: CreateServerConfigurationDto) {
-    return 'This action adds a new serverConfiguration';
+  async create(createServerConfigurationDto: CreateServerConfigurationDto) {
+    const existentServerConfigurations = await this.find();
+
+    if (existentServerConfigurations.length > 0)
+      throw new Error('Já existe uma configuração para o servidor');
+
+    const serverConfiguration = new ServerConfiguration();
+    Object.assign(serverConfiguration, createServerConfigurationDto);
+    return this.serverConfigurationRepository.save(serverConfiguration);
   }
 
-  findAll() {
-    return `This action returns all serverConfiguration`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} serverConfiguration`;
+  find() {
+    return this.serverConfigurationRepository.find();
   }
 
   update(
     id: number,
     updateServerConfigurationDto: UpdateServerConfigurationDto,
   ) {
-    return `This action updates a #${id} serverConfiguration`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} serverConfiguration`;
+    return this.serverConfigurationRepository.update(
+      id,
+      updateServerConfigurationDto,
+    );
   }
 }
