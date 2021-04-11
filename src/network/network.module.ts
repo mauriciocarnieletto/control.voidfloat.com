@@ -5,5 +5,6 @@ import { NetworkService } from './network.service';
 @Module({
   imports: [ScannerModule],
   providers: [NetworkService],
+  exports: [NetworkService],
 })
 export class NetworkModule {}

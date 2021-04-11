@@ -10,8 +10,16 @@ export class ClientService {
     @Inject('CLIENT_REPOSITORY')
     private clientRepository: Repository<Client>,
   ) {}
-  create(createClientDto: CreateClientDto) {
-    return this.clientRepository.create({ ...createClientDto });
+  async create(createClientDto: CreateClientDto) {
+    const clients = await this.clientRepository.find();
+
+    if (clients.length > 0)
+      throw new Error('Já existe um cliente configurado para este servidor');
+
+    const client = new Client();
+    client.name = createClientDto.name;
+
+    return this.clientRepository.save(client);
   }
 
   findAll() {

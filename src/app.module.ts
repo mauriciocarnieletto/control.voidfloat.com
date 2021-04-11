@@ -1,6 +1,5 @@
 import { HttpModule, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { NetworkModule } from './network/network.module';
@@ -12,8 +11,7 @@ import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { PodCommandsModule } from './pod-commands/pod-commands.module';
-import { Pod } from './pod/entities/pod.entity';
-import { Client } from './client/entities/client.entity';
+import { ServerConfigurationModule } from './server-configuration/server-configuration.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -34,6 +32,7 @@ import configuration from './config/configuration';
     AuthModule,
     UsersModule,
     PodCommandsModule,
+    ServerConfigurationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

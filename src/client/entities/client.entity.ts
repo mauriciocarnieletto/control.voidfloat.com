@@ -8,6 +8,6 @@ export class Client {
   @Column({ length: 500 })
   name: string;
 
-  @Column()
-  avatarUrl?: string;
+  @Column({ nullable: true })
+  logo?: string;
 }

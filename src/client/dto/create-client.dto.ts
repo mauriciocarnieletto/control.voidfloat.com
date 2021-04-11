@@ -1,4 +1,3 @@
-export class CreateClientDto {
-  name: string;
-  logo: string;
-}
+import { Client } from '../entities/client.entity';
+
+export class CreateClientDto extends Client {}
