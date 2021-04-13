@@ -19,10 +19,10 @@ export class PodService {
   host: string;
 
   constructor(
-    private httpService: HttpService,
-    private configService: ConfigService,
     @Inject('POD_REPOSITORY')
     private podRepository: Repository<Pod>,
+    private httpService: HttpService,
+    private configService: ConfigService,
   ) {
     this.init();
   }
@@ -37,7 +37,9 @@ export class PodService {
   }
 
   create(createPodDto: CreatePodDto) {
-    return this.podRepository.create({ ...createPodDto });
+    const pod = new Pod();
+    Object.assign(pod, { ...createPodDto });
+    return this.podRepository.save(pod);
   }
 
   findAll() {
@@ -52,8 +54,9 @@ export class PodService {
     return this.podRepository.update({ id }, { ...updatePodDto });
   }
 
-  remove(id: number) {
-    return this.podRepository.delete({ id });
+  async remove(id: number) {
+    const pod = await this.findOne(id);
+    return this.podRepository.delete(pod);
   }
 
   getUrl(method: string, host?: string): string {

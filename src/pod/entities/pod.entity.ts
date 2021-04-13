@@ -5,9 +5,18 @@ export class Pod {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 500 })
+  @Column()
   name: string;
 
   @Column()
-  avatarUrl: string;
+  model: string;
+
+  @Column()
+  serialNumber: string;
+
+  @Column()
+  localIP: string;
+
+  @Column()
+  isActive: boolean;
 }
