@@ -114,7 +114,7 @@ export interface InitialScreen {
    * 1 - Atenção
    * 2 - Problema na conexao com o servidor
    */
-  serverEquipStatus: 2;
+  serverEquipStatus: EquipmentStatus;
   /**
    * Array de bits de alarmes,
    * TEMPERATURE1MAIORQUETEMPERATURE2,	//BIT0 - Temperatura sensor 1 maior que temperatura sensor 2 alem do limite
@@ -132,9 +132,46 @@ export interface InitialScreen {
    * EMERGENCIA,							//BIT12 - Botao de emergencia
    */
   alarm: string;
+  /**
+   * Campo de descrição do alarme
+   * @virtual
+   */
+  alarmDescription?: {
+    //BIT0 - Temperatura sensor 1 maior que temperatura sensor 2 alem do limite
+    TEMPERATURE1MAIORQUETEMPERATURE2?: boolean;
+    //BIT1 - Temperatura sensor 2 maior que temperatura sensor 1 alem do limite
+    TEMPERATURE2MAIORQUETEMPERATURE1?: boolean;
+    //BIT2 - ChipVS1053(MP3 player) não está respondendo
+    VS1053_NOT_PRESENT?: boolean;
+    //BIT3 - SD card não está respondendo
+    SD_FAILED?: boolean;
+    //BIT4 - Ventilador parado quando deveria estar em funcionamento
+    VENTILADOR_ERROR?: boolean;
+    //BIT5 - Sensor de temperatura 1 em aberto
+    TEMPERATURE1OPENED?: boolean;
+    //BIT6 - Sensor de temperatura 1 em curto
+    TEMPERATURE1SHORTED?: boolean;
+    //BIT7 - Sensor de temperatura 2 em aberto
+    TEMPERATURE2OPENED?: boolean;
+    //BIT8 - Sensor de temperatura 2 em curto
+    TEMPERATURE2SHORTED?: boolean;
+    //BIT9 - Leds em aberto
+    LEDSOPENED?: boolean;
+    //BIT10 - Leds em curto
+    LEDSSHORTED?: boolean;
+    //BIT11 - Leds em sobrecarga
+    LEDSOVERLOADED?: boolean;
+    //BIT12 - Botao de emergencia
+    EMERGENCIA?: boolean;
+  };
+  /**
+   * Indica se a pod está com alarme
+   * @virtual
+   */
+  isAlarmed: boolean;
 }
 
-export interface PodParameters {
+export interface PodConfiguration {
   /**
    * Senha do equipamento
    */

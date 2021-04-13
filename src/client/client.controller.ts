@@ -17,10 +17,9 @@ import { UpdateClientDto } from './dto/update-client.dto';
 export class ClientController {
   constructor(private readonly clientService: ClientService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.clientService.findAll();
+  find() {
+    return this.clientService.find();
   }
 
   @UseGuards(JwtAuthGuard)
@@ -34,7 +33,6 @@ export class ClientController {
     return this.clientService.create(createClientDTO);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateClientDto: UpdateClientDto) {
     return this.clientService.update(+id, updateClientDto);

@@ -14,6 +14,7 @@ import { UsersService } from 'src/users/users.service';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt.guard';
 import { ServerConfigurationService } from 'src/server-configuration/server-configuration.service';
+import { CreateServerConfigurationDto } from 'src/server-configuration/dto/create-server-configuration.dto';
 
 @Controller('setup')
 export class SetupController {
@@ -50,7 +51,7 @@ export class SetupController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('/server')
+  @Get('/server/network')
   async getServerInitialData(@Request() req) {
     const serverConfigurations = await this.serverConfigurationService.find();
     if (serverConfigurations?.length === 0) {
@@ -63,6 +64,7 @@ export class SetupController {
         sshPort,
       } = await this.serverConfigurationService.findOSData();
       return this.serverConfigurationService.create({
+        name: '',
         clientId: req.user.clientId,
         hostname,
         publicIp,
@@ -76,8 +78,17 @@ export class SetupController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('/server')
-  setServerData() {
-    return this.setupService.findAll();
+  @Patch('/server/network')
+  async updateerverInitialData(
+    @Body() createServerConfigurationDto: CreateServerConfigurationDto,
+  ) {
+    const serverConfiguration = (
+      await this.serverConfigurationService.find()
+    )[0];
+
+    return this.serverConfigurationService.update(
+      serverConfiguration.id,
+      createServerConfigurationDto,
+    );
   }
 }

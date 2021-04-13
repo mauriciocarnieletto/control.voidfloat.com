@@ -22,8 +22,8 @@ export class ClientService {
     return this.clientRepository.save(client);
   }
 
-  findAll() {
-    return this.clientRepository.find();
+  find() {
+    return this.clientRepository.findOne();
   }
 
   findOne(id: number) {

@@ -9,6 +9,9 @@ export class ServerConfiguration {
   clientId: number;
 
   @Column({ nullable: true })
+  name?: string;
+
+  @Column({ nullable: true })
   sshPort?: string;
 
   @Column({ nullable: true })

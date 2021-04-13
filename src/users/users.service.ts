@@ -13,6 +13,17 @@ export class UsersService {
     private userRepository: Repository<User>,
   ) {}
 
+  async sanitize(userOrUsersPromise: Promise<User | User[]>) {
+    const userOrUsers = await userOrUsersPromise;
+    if (Array.isArray(userOrUsers)) {
+      userOrUsers.forEach((user) => delete user.password);
+      return userOrUsers;
+    }
+
+    delete userOrUsers.password;
+    return userOrUsers;
+  }
+
   async create(createUserDto: CreateUserDto) {
     const usersWithSameEmail = await this.find({
       where: { email: createUserDto.email },

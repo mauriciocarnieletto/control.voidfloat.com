@@ -9,7 +9,7 @@ import {
   Commands,
   InitialScreen,
   PingResult,
-  PodParameters,
+  PodConfiguration,
 } from './interfaces';
 
 @Injectable()
@@ -73,7 +73,7 @@ export class PodService {
     }
   }
 
-  async setConfig(config: PodParameters) {
+  async setConfig(config: PodConfiguration) {
     return this.httpService.axiosRef.post(this.getUrl('setconfig'), config);
   }
 

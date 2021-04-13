@@ -26,19 +26,19 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Get('me')
   me(@Request() req) {
-    return req.user;
+    return this.usersService.sanitize(this.usersService.findOne(req.user.id));
   }
 
   @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
-    return this.usersService.find();
+    return this.usersService.sanitize(this.usersService.find());
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+    return this.usersService.sanitize(this.usersService.findOne(+id));
   }
 
   @UseGuards(JwtAuthGuard)
