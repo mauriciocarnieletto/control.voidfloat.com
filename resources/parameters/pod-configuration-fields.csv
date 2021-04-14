@@ -1,0 +1,108 @@
+id;configurationType;key;value;name;description;type;listOptions;defaultValue;functionName;numberMin;numberMax;isAdvanced;order;isShownOnCard;isShownOnSessionScreen
+1;pod;pass;;Senha do equipamento;Senha do equipamento;string;;;;;;true;;;
+2;pod;hour;;Horario do equipamento (horas);Horario do equipamento (horas);number;;;;0;23;true;;;
+3;pod;min;;Horário do equipamento (minutos);Horário do equipamento (minutos);number;;;;0;60;true;;;
+4;pod;sec;;Horario do equipamento (segundos);Horario do equipamento (segundos);number;;;;0;60;true;;;
+5;pod;day;;Horario do equipamento (dia);Horario do equipamento (dia);number;;;;1;31;true;;;
+6;pod;month;;Horario do equipamento (mês);Horario do equipamento (mês);number;;;;1;12;true;;;
+7;pod;year;;Horario do equipamento (ano);Utilizar apenas os dois últimos números do ano.;number;;;;0;99;true;;;
+8;pod;machineState;;Estado da máquina;Troca a maquina de estado(indica pra qual estado vai) 0 valor varia de 0 a 6;list;"[
+  { ""name"": 'TURN_OFF', ""value"": 0 },
+  { ""name"": 'PRE_SESSAO', ""value"": 1 },
+  { ""name"": 'SESSAO', ""value"": 2 },
+  { ""name"": 'SESSAO_LIMPEZA', ""value"": 3 },
+  { ""name"": 'SESSAO_NOTURNO', ""value"": 4 },
+  { ""name"": 'SESSAO_REPOUSO', ""value"": 5 },
+  { ""name"": 'DELAY_SESSAO', ""value"": 6 },
+]";;;0;6;;;true;true
+9;pod;sessionTime;;Duração da sessão (em minutos);Duração da sessão (em minutos);number;;;;5;1440;;;true;true
+10;pod;initialMusicTime;;Duração da música inicial (em minutos);Duração da música inicial (em minutos) a session time, onde 0 significa desabilitado;number;;;;;;;;;true
+11;pod;finalMusicTime;;Duração da música Final (em minutos);"Duração da música Final (em minutos)
+0 a session time, onde 0 significa desabilitado
+O tempo somado de initial music time + final music time nao pode ser maior que session time";number;;;;;;;;;true
+12;pod;ledPower;;Intensidade da luz;"   * Duração da música Final (em minutos)
+   * 0 a session time, onde 0 significa desabilitado
+   * o tempo somado de initial music time + final music time nao pode ser maior que session time";number;;;;0;100;;;;true
+13;pod;ledR;;Tom vermelho;Cor do led R;number;;;;0;255;true;;;
+14;pod;ledG;;Tom verde;Cor do led G;number;;;;0;255;true;;;
+15;pod;ledB;;Tom azul;Cor do led Azul;number;;;;0;255;true;;;
+16;pod;initialMusicTime;;Música do início da sessão;"   * Música de início da sessão
+   * Nome da musica inicial da mesma forma como foi lido no comando get";string;;;;;;;;;true
+17;pod;finalMusicTime;;Música do final da sessão;"   * Música de encerramento da sessão
+   * Nome da musica final da mesma forma como foi lido no comando get";string;;;;;;;;;true
+18;pod;setTemp;;Temperatura;"   * Define a temperatura do tanque
+   * valor do setpoint de temperatura em float com um digito depois da virgula somente. De 20.0 a 37.0";number;;;;20;37;;;true;true
+19;pod;volume;;Volume;"  /**
+   * Altura da música no tanque
+   * seta o valor do volume durante sessao de 0 a 255
+   * @min 0
+   * @max 255
+   */";number;;;;0;255;;;true;true
+20;pod;cooler;;Ligar cooler;"  /**
+   * Liga ou desliga o cooler
+   * seta se o ventilador fica ligado ou desligado durante sessao. true-ligado e false-desligado
+   */";boolean;;;;;;;;;true
+21;pod;rpmCooler;;Velocidade cooler;"  /**
+   * Seta a velocidade do ventilador durante sessao. de 450 a 2000.
+   * @min 450
+   * @max 2000
+   */";number;;;;450;2000;;;;true
+22;pod;fadeOut;;Fadeout Música;"  /**
+   * Seta tempo em segundos de fade para desligar/ligar os leds quando pressionar botao dentro do tanque. De 1 a 20s
+   * @min 1
+   * @max 20
+   */";;;;;1;20;;;;true
+23;pod;sessionDelay;;Tempo de delay para sessão;"  /**
+   * Seta tempo de delay em minutos antes da sessao. De 0 a 99 minutos.
+   * @min 0
+   * @max 99
+   */";number;;;;0;99;true;;;
+24;pod;cleaningTime;;Tempo de limpeza (minutos);"  /**
+   * Tempo em minutos de limpeza. De 1 a 65535 minutos
+   * @min 1
+   * @max 65535
+   */";number;;;;1;65535;true;;;
+25;component;closedLoopPh;;Abertura Bomba de PH;"  /**
+   * Define se o acionamento da bomba de pH eh em malha aberta ou malha fechada. true - malha fechada, false - malha aberta
+   */";boolean;;false;;;;true;;;
+26;component;closedLoopCloro;;Abertura Cloro;Define se o acionamento da bomba de cloro eh em malha aberta ou malha fechada. true - malha fechada, false - malha aberta;boolean;;false;;;;true;;;
+27;component;closedLoopH2O2;;Abertura H2O2;Define se o acionamento da bomba de H2O2 eh em malha aberta ou malha fechada. true - malha fechada, false - malha aberta;boolean;;false;;;;true;;;
+28;component;closedLoopTDS;;Abertura TDS; Define se o acionamento da bomba de TDS eh em malha aberta ou malha fechada. true - malha fechada, false - malha aberta;boolean;;20;;;;true;;;
+29;component;kpPh;;KP PH;"  /**
+   * Valor do coeficiente kp do PID de acionamento da bomba de pH. De 0 a 65535
+   */";;;20;;;;;;;
+30;component;kiPh;;KI PH;"  /**
+   * Valor do coeficiente ki do PID de acionamento da bomba de pH. De 0 a 65535
+   */";;;2;;;;;;;
+31;component;kdPh;;KD PH;/** * Valor do coeficiente kd do PID de acionamento da bomba de pH. De 0 a 65535 */;number;;20;;0;65535;;;;
+32;component;kpCloro;;KP CLORO;/** * Valor do coeficiente kp do PID de acionamento da bomba de cloro. De 0 a 65535 */;number;;20;;0;65535;;;;
+33;component;kiCloro;;KI CLORO;/** * Valor do coeficiente ki do PID de acionamento da bomba de cloro. De 0 a 65535 */;number;;20;;0;65535;;;;
+34;component;kdCloro;;KD CLORO;/** * Valor do coeficiente kd do PID de acionamento da bomba de cloro. De 0 a 65535 */;number;;20;;0;65535;;;;
+35;component;kpH2O2;;KP H2O2;/** * Valor do coeficiente kp do PID de acionamento da bomba de H2O2. De 0 a 65535 */;number;;20;;0;65535;;;;
+36;component;kiH2O2;;KI H2O2;/** * Valor do coeficiente ki do PID de acionamento da bomba de H2O2. De 0 a 65535 */;number;;20;;0;65535;;;;
+37;component;kdH2O2;;KD H2O2;/** * Valor do coeficiente kd do PID de acionamento da bomba de H2O2. De 0 a 65535 */;number;;20;;0;65535;;;;
+38;component;kpTDS;;KP TDS;"  /**
+   * Valor do coeficiente kp do PID de acionamento da bomba de TDS. De 0 a 65535
+   */";number;;20;;0;65535;;;;
+39;component;kiTDS;;KD TDS;"  /**
+   * Valor do coeficiente ki do PID de acionamento da bomba de TDS. De 0 a 65535
+   */";number;;20;;0;65535;;;;
+40;component;kdTDS;;KD TDS;/** * Valor do coeficiente kd do PID de acionamento da bomba de TDS. De 0 a 65535 */;number;;20;;0;65535;;;;
+41;component;buzzer;;Acionar buzzer em modo emergência?;"  /**
+   * Seta se o buzzer em modo emergencia sera ligado ou nao. true-ligado e false-desligado
+   */";boolean;;true;;;;;;;
+42;component;offsetTemp;;Temperatura de calibração sensores;"  /**
+   * Seta o offset de temperatura de calibracao dos sensores. Valor em float.
+   */";number;;-0.1;;;;;;;
+43;component;pHTime;;Tempo de abertura PH;"  /**
+   * Seta tempo de acionamento da bomba de pH em segundos de 1 a 65535 durante o tempo de limpeza
+   */";number;;20;;1;65535;true;;;
+44;component;cloroTime;;Tempo de abertura Cloro;"  /**
+   * seta tempo de acionamento da bomba de Cloro em segundos de 1 a 65535 durante o tempo de limpeza
+   */";number;;20;;1;65535;true;;;
+45;component;h2o2Time;;Tempo de abertura H2O2;"  /**
+   * seta tempo de acionamento da bomba de H2O2 em segundos de 1 a 65535 durante o tempo de limpeza
+   */";number;;20;;1;65535;true;;;
+46;component;tdsTime;;Tempo de abertura TDS;"  /**
+   * seta tempo de acionamento da bomba de Tds em segundos de 1 a 65535 durante o tempo de limpeza
+   */";number;;20;;1;65535;true;;;

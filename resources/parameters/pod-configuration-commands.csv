@@ -1,0 +1,9 @@
+name;description;isTimeRequired;command
+Botao Luz pulso curto;Botao Luz pulso curto;false;1
+Botao Luz pulso longo;Botao Luz pulso longo;false;2
+Botao Som pulso curto;Botao Som pulso curto;false;3
+Acionar bomba PH (tempo em segundos);Acionar bomba PH (tempo em segundos);true;4
+Acionar bomba Cloro (tempo em segundos);Acionar bomba Cloro (tempo em segundos);true;5
+Acionar bomba H2O2 (tempo em segundos);Acionar bomba H2O2 (tempo em segundos);true;6
+Acionar bomba TDS (tempo em segundos);Acionar bomba TDS (tempo em segundos);true;7
+Desligar buzzer de uma emergencia acontecida;Desligar buzzer de uma emergencia acontecida;false;8

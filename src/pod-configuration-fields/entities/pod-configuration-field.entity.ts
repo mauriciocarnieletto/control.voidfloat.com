@@ -4,6 +4,8 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 export class PodConfigurationField {
   @PrimaryGeneratedColumn()
   id: number;
+  @Column()
+  configurationType: 'pod' | 'component';
   @Column({ length: 100 })
   key: string;
   @Column({ length: 100 })
@@ -24,6 +26,10 @@ export class PodConfigurationField {
   numberMax?: number;
   @Column({ default: false })
   isAdvanced?: boolean;
+  @Column({ default: false })
+  isShownOnCard?: boolean;
+  @Column({ default: false })
+  isShownOnSessionScreen?: boolean;
   @Column({ nullable: true })
   order?: number;
 }
