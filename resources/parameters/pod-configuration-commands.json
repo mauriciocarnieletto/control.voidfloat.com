@@ -1,47 +1,55 @@
 [
   {
+    "id": 1,
     "name": "Botao Luz pulso curto",
     "description": "Botao Luz pulso curto",
     "isTimeRequired": false,
     "command": 1
   },
   {
+    "id": 2,
     "name": "Botao Luz pulso longo",
     "description": "Botao Luz pulso longo",
     "isTimeRequired": false,
     "command": 2
   },
   {
+    "id": 3,
     "name": "Botao Som pulso curto",
     "description": "Botao Som pulso curto",
     "isTimeRequired": false,
     "command": 3
   },
   {
+    "id": 4,
     "name": "Acionar bomba PH (tempo em segundos)",
     "description": "Acionar bomba PH (tempo em segundos)",
     "isTimeRequired": true,
     "command": 4
   },
   {
+    "id": 5,
     "name": "Acionar bomba Cloro (tempo em segundos)",
     "description": "Acionar bomba Cloro (tempo em segundos)",
     "isTimeRequired": true,
     "command": 5
   },
   {
+    "id": 6,
     "name": "Acionar bomba H2O2 (tempo em segundos)",
     "description": "Acionar bomba H2O2 (tempo em segundos)",
     "isTimeRequired": true,
     "command": 6
   },
   {
+    "id": 7,
     "name": "Acionar bomba TDS (tempo em segundos)",
     "description": "Acionar bomba TDS (tempo em segundos)",
     "isTimeRequired": true,
     "command": 7
   },
   {
+    "id": 8,
     "name": "Desligar buzzer de uma emergencia acontecida",
     "description": "Desligar buzzer de uma emergencia acontecida",
     "isTimeRequired": false,
