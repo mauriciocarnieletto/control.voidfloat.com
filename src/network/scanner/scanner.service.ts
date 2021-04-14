@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { getIPRange } from 'get-ip-range';
 import { promise as ping } from 'ping';
-import { PodService } from 'src/pod/pod.service';
+import { PodCommunicationService } from 'src/pod-communication/pod-communication.service';
 import { DeviceI } from '../entities/device.interface';
 
 @Injectable()
 export class ScannerService {
-  constructor(private podService: PodService) {}
+  constructor(private podCommunicationService: PodCommunicationService) {}
   /**
    * Sends a ping to all servers to update the arp table.
    */
@@ -54,6 +54,8 @@ export class ScannerService {
   }
 
   async filterPodsFromDevices(devices: DeviceI[]) {
-    return Promise.all(devices.map(({ ip }) => this.podService.ping(ip)));
+    return Promise.all(
+      devices.map(({ ip }) => this.podCommunicationService.ping(ip)),
+    );
   }
 }

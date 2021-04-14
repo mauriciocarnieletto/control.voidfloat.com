@@ -7,14 +7,17 @@ export class PodConfigurationField {
   @Column({ length: 100 })
   key: string;
   @Column({ length: 100 })
+  value: string;
+  @Column({ length: 100 })
   name: string;
   @Column({ length: 500 })
   description: string;
   @Column()
-  type: 'number' | 'string' | 'list' | 'boolean';
-
+  type: 'number' | 'string' | 'list' | 'boolean' | 'function';
   @Column({ nullable: true })
   listOptions?: string;
+  @Column({ nullable: true })
+  functionName?: string;
   @Column({ nullable: true })
   numberMin?: number;
   @Column({ nullable: true })

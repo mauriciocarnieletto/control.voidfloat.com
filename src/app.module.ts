@@ -10,10 +10,10 @@ import { ClientModule } from './client/client.module';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { PodCommandsModule } from './pod-commands/pod-commands.module';
 import { ServerConfigurationModule } from './server-configuration/server-configuration.module';
 import { PodConfigurationFieldsModule } from './pod-configuration-fields/pod-configuration-fields.module';
 import { PodConfigurationCommandsModule } from './pod-configuration-commands/pod-configuration-commands.module';
+import { PodCommunicationModule } from './pod-communication/pod-communication.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -33,10 +33,10 @@ import configuration from './config/configuration';
     ClientModule,
     AuthModule,
     UsersModule,
-    PodCommandsModule,
     ServerConfigurationModule,
     PodConfigurationFieldsModule,
     PodConfigurationCommandsModule,
+    PodCommunicationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

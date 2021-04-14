@@ -17,6 +17,21 @@ export enum MachineStates {
   DELAY_SESSAO = 6,
 }
 
+export interface ConfigurationListItem {
+  name: string;
+  value: any;
+}
+
+export const estadosDeMaquina = [
+  { name: 'TURN_OFF', value: 0 },
+  { name: 'PRE_SESSAO', value: 1 },
+  { name: 'SESSAO', value: 2 },
+  { name: 'SESSAO_LIMPEZA', value: 3 },
+  { name: 'SESSAO_NOTURNO', value: 4 },
+  { name: 'SESSAO_REPOUSO', value: 5 },
+  { name: 'DELAY_SESSAO', value: 6 },
+];
+
 export enum EquipmentStatus {
   OK = 0,
   Warning = 1,
@@ -52,11 +67,117 @@ export enum Commands {
    * Acionar bomba TDS (tempo em segundos)
    */
   ACTIVATE_PUMP_TDS = 7,
+  /**
+   * Desligar buzzer de uma emergencia acontecida
+   */
+  TURNOFF_BUZZER = 8,
 }
 
 export interface Command {
+  name: string;
+  description: string;
   command: Commands;
-  time?: number;
+  icon?: string;
+  isTimeRequired?: number;
+}
+
+export interface EquipamentConfiguration {
+  /**
+   * senha do equipamento a ser configurado
+   */
+  pass: string;
+  /**
+   * tempo em minutos de limpeza. De 1 a 65535 minutos
+   */
+  cleaningTime: number;
+  /**
+   * seta o offset de temperatura de calibracao dos sensores. Valor em float.
+   */
+  offsetTemp: number;
+  /**
+   * seta se o buzzer em modo emergencia sera ligado ou nao. true-ligado e false-desligado
+   */
+  buzzer: boolean;
+  /**
+   * seta tempo de acionamento da bomba de pH em segundos de 1 a 65535 durante o tempo de limpeza
+   */
+  pHTime: number;
+  /**
+   * seta tempo de acionamento da bomba de Cloro em segundos de 1 a 65535 durante o tempo de limpeza
+   */
+  cloroTime: number;
+  /**
+   * seta tempo de acionamento da bomba de H2O2 em segundos de 1 a 65535 durante o tempo de limpeza
+   */
+  h2o2Time: number;
+  /**
+   * seta tempo de acionamento da bomba de Tds em segundos de 1 a 65535 durante o tempo de limpeza
+   */
+  tdsTime: number;
+  /**
+   * define se o acionamento da bomba de pH eh em malha aberta ou malha fechada. true - malha fechada, false - malha aberta
+   */
+  closedLoopPh: number;
+  /**
+   * define se o acionamento da bomba de cloro eh em malha aberta ou malha fechada. true - malha fechada, false - malha aberta
+   */
+  closedLoopCloro: number;
+  /**
+   * define se o acionamento da bomba de H2O2 eh em malha aberta ou malha fechada. true - malha fechada, false - malha aberta
+   */
+  closedLoopH2O2: number;
+  /**
+   * define se o acionamento da bomba de TDS eh em malha aberta ou malha fechada. true - malha fechada, false - malha aberta
+   */
+  closedLoopTDS: number;
+  /**
+   * Valor do coeficiente kp do PID de acionamento da bomba de pH. De 0 a 65535
+   */
+  kpPh: number;
+  /**
+   * Valor do coeficiente ki do PID de acionamento da bomba de pH. De 0 a 65535
+   */
+  kiPh: number;
+  /**
+   * Valor do coeficiente kd do PID de acionamento da bomba de pH. De 0 a 65535
+   */
+  kdPh: number;
+  /**
+   * Valor do coeficiente kp do PID de acionamento da bomba de cloro. De 0 a 65535
+   */
+  kpCloro: number;
+  /**
+   * Valor do coeficiente ki do PID de acionamento da bomba de cloro. De 0 a 65535
+   */
+  kiCloro: number;
+  /**
+   * Valor do coeficiente kd do PID de acionamento da bomba de cloro. De 0 a 65535
+   */
+  kdCloro: number;
+  /**
+   * Valor do coeficiente kp do PID de acionamento da bomba de H2O2. De 0 a 65535
+   */
+  kpH2O2: number;
+  /**
+   * Valor do coeficiente ki do PID de acionamento da bomba de H2O2. De 0 a 65535
+   */
+  kiH2O2: number;
+  /**
+   * Valor do coeficiente kd do PID de acionamento da bomba de H2O2. De 0 a 65535
+   */
+  kdH2O2: number;
+  /**
+   * Valor do coeficiente kp do PID de acionamento da bomba de TDS. De 0 a 65535
+   */
+  kpTDS: number;
+  /**
+   * Valor do coeficiente ki do PID de acionamento da bomba de TDS. De 0 a 65535
+   */
+  kiTDS: number;
+  /**
+   * Valor do coeficiente kd do PID de acionamento da bomba de TDS. De 0 a 65535
+   */
+  kdTDS: number;
 }
 
 export interface PodScreenData {
@@ -398,4 +519,19 @@ export interface PodConfiguration {
    * seta tempo de acionamento da bomba de Tds em segundos de 1 a 65535 durante o tempo de limpeza
    */
   tdsTime: number;
+}
+
+export interface LoadStatusResponse {
+  status: EquipmentStatus;
+  heater: boolean;
+  UV: boolean;
+  INV: boolean;
+  cooler: boolean;
+  coolerRPM: boolean;
+  som: boolean;
+  leds: boolean;
+  phPump: boolean;
+  cloroPump: boolean;
+  h2o2Pump: boolean;
+  tdsPump: boolean;
 }
