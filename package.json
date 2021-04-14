@@ -11,7 +11,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "mock-server": "json-server -p 9000 --watch ./resources/mocks/json-server/db.json",
-    "typeorm:cli": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli -f ./ormconfig-migrations.ts",
+    "typeorm:cli": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli -f ./src/ormconfig-migrations.ts",
     "migration:generate": "yarn typeorm:cli -- migration:generate -n",
     "migration:create": "yarn typeorm:cli -- migration:create -n",
     "migration:run": "yarn typeorm:cli -- migration:run",

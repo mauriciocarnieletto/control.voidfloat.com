@@ -20,9 +20,4 @@ export const config: TypeOrmModuleOptions = {
   ],
   autoLoadEntities: true,
   synchronize: configuration().isDev,
-  migrations: ['migration/*{.ts,.js}'],
-  cli: {
-    migrationsDir: 'migration',
-  },
-  logging: true,
 };
