@@ -60,7 +60,7 @@ export class PodCommunicationService {
   async ping(host?: string) {
     try {
       const pingResponse = await this.httpService.axiosRef.get<PingResult>(
-        this.getUrl('ping', host),
+        this.getUrl('initialscreen', host),
       );
 
       return { isPod: true, host, ...pingResponse };

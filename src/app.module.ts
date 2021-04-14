@@ -1,5 +1,6 @@
 import { HttpModule, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { NetworkModule } from './network/network.module';
@@ -14,6 +15,7 @@ import { ServerConfigurationModule } from './server-configuration/server-configu
 import { PodConfigurationFieldsModule } from './pod-configuration-fields/pod-configuration-fields.module';
 import { PodConfigurationCommandsModule } from './pod-configuration-commands/pod-configuration-commands.module';
 import { PodCommunicationModule } from './pod-communication/pod-communication.module';
+import { BackgroundServiceModule } from './background-service/background-service.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -25,6 +27,7 @@ import configuration from './config/configuration';
     ConfigModule.forRoot({
       load: [configuration],
     }),
+    ScheduleModule.forRoot(),
     DatabaseModule,
     PodModule,
     NetworkModule,
@@ -37,6 +40,7 @@ import configuration from './config/configuration';
     PodConfigurationFieldsModule,
     PodConfigurationCommandsModule,
     PodCommunicationModule,
+    BackgroundServiceModule,
   ],
   controllers: [AppController],
   providers: [AppService],
