@@ -34,14 +34,20 @@ export class ScannerService {
     return ping.probe(address);
   }
 
-  async getLocalDevices() {
-    const networkIps = await getIPRange('192.168.0.0/24');
+  async getLocalDevices(subnet: string) {
+    const networkIps = await getIPRange(subnet);
     const pingedDevices = await this.pingDevices(networkIps);
     return pingedDevices.filter(({ isAlive }) => isAlive);
   }
 
-  async scan(): Promise<DeviceI[]> {
-    const localDevices = await this.getLocalDevices();
+  async filterPodsFromDevices(devices: DeviceI[]) {
+    return Promise.all(
+      devices.map(({ ip }) => this.podCommunicationService.ping(ip)),
+    ).then((pingedDevices) => pingedDevices.filter((device) => device.isPod));
+  }
+
+  async scanNetwork(subnet: string) {
+    const localDevices = await this.getLocalDevices(subnet);
     const devices = localDevices.map(
       ({ ip }) =>
         ({
@@ -50,12 +56,6 @@ export class ScannerService {
         } as DeviceI),
     );
     const podDevices = await this.filterPodsFromDevices(devices);
-    return devices;
-  }
-
-  async filterPodsFromDevices(devices: DeviceI[]) {
-    return Promise.all(
-      devices.map(({ ip }) => this.podCommunicationService.ping(ip)),
-    );
+    return podDevices;
   }
 }

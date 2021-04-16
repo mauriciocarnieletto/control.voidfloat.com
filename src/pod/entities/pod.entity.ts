@@ -20,6 +20,6 @@ export class Pod {
   @Column()
   hostname: string;
 
-  @Column()
-  status: string;
+  @Column({ nullable: true })
+  status?: string;
 }

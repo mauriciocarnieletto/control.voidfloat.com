@@ -62,9 +62,20 @@ export class PodCommunicationService {
       const pingResponse = await this.httpService.axiosRef.get<PingResult>(
         this.getUrl('initialscreen', host),
       );
-      return { isPod: true, host, ...pingResponse.data };
+      const statusResponse = await this.httpService.axiosRef.get<PingResult>(
+        this.getUrl('loadstatus', host),
+      );
+      return {
+        isPod: true,
+        hostname: host,
+        model: 'Void One',
+        ipAddress: host,
+        screen: pingResponse.data,
+        status: statusResponse.data,
+        connection: { isConnected: true },
+      };
     } catch (error) {
-      console.log(`Host ${host} is not a pod.`, error);
+      console.log(`Host ${host} is not a pod.`);
       return { isPod: false, host };
     }
   }

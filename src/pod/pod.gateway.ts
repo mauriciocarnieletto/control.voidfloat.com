@@ -26,7 +26,7 @@ export class PodGateway
   }
 
   @SubscribeMessage('watchPods')
-  public joinRoom(client: Socket, room: string): void {
+  public watchPods(client: Socket, room: string): void {
     this.redis
       .on('message', function (channel, message) {
         client.emit('podStatus', { channel, message });

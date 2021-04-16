@@ -84,8 +84,8 @@ export class NetworkService {
     });
   }
 
-  async updateInfo() {
-    const devices = await this.scannerService.scan();
-    console.log(devices);
+  async searchPods() {
+    const devices = await this.scannerService.scanNetwork('127.0.0.1/24');
+    return devices;
   }
 }
