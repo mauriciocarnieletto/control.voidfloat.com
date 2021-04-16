@@ -62,8 +62,7 @@ export class PodCommunicationService {
       const pingResponse = await this.httpService.axiosRef.get<PingResult>(
         this.getUrl('initialscreen', host),
       );
-
-      return { isPod: true, host, ...pingResponse };
+      return { isPod: true, host, ...pingResponse.data };
     } catch (error) {
       console.log(`Host ${host} is not a pod.`, error);
       return { isPod: false, host };

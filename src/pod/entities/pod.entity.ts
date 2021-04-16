@@ -15,8 +15,11 @@ export class Pod {
   serialNumber: string;
 
   @Column()
-  localIP: string;
+  ipAddress: string;
 
   @Column()
-  isActive: boolean;
+  hostname: string;
+
+  @Column()
+  status: string;
 }

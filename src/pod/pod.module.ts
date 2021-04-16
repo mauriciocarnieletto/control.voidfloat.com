@@ -6,6 +6,7 @@ import { DatabaseModule } from 'src/database/database.module';
 import { podProviders } from './pod.providers';
 import configuration from 'src/config/configuration';
 import { PodCommunicationModule } from 'src/pod-communication/pod-communication.module';
+import { PodGateway } from './pod.gateway';
 
 @Module({
   controllers: [PodController],
@@ -20,7 +21,7 @@ import { PodCommunicationModule } from 'src/pod-communication/pod-communication.
     DatabaseModule,
     PodCommunicationModule,
   ],
-  providers: [...podProviders, PodService],
+  providers: [...podProviders, PodService, PodGateway],
   exports: [PodService],
 })
 export class PodModule {}

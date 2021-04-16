@@ -1,5 +1,6 @@
 import { HttpModule, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { ScheduleModule } from '@nestjs/schedule';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -16,7 +17,9 @@ import { PodConfigurationFieldsModule } from './pod-configuration-fields/pod-con
 import { PodConfigurationCommandsModule } from './pod-configuration-commands/pod-configuration-commands.module';
 import { PodCommunicationModule } from './pod-communication/pod-communication.module';
 import { BackgroundServiceModule } from './background-service/background-service.module';
+import { PodGateway } from './pod/pod.gateway';
 import configuration from './config/configuration';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -26,6 +29,9 @@ import configuration from './config/configuration';
     }),
     ConfigModule.forRoot({
       load: [configuration],
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
     }),
     ScheduleModule.forRoot(),
     DatabaseModule,
@@ -43,6 +49,6 @@ import configuration from './config/configuration';
     BackgroundServiceModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, PodGateway],
 })
 export class AppModule {}
