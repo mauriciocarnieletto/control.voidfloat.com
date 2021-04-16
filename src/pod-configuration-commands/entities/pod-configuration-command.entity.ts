@@ -1,5 +1,11 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
+export class PodCommandDTO {
+  id: number;
+  time?: number;
+  command: number;
+}
+
 @Entity()
 export class PodConfigurationCommand {
   @PrimaryGeneratedColumn()

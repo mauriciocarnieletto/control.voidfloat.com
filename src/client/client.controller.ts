@@ -33,6 +33,7 @@ export class ClientController {
     return this.clientService.create(createClientDTO);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateClientDto: UpdateClientDto) {
     return this.clientService.update(+id, updateClientDto);

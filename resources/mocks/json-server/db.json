@@ -25,7 +25,7 @@
   },
   "initialscreen": {
     "status": "OK",
-    "sessionStatus": 1,
+    "sessionStatus": 0,
     "remainingTime": "05:00",
     "actualTemperature": 35.5,
     "cooler": true,
@@ -36,10 +36,23 @@
     "fwVersion": "V00.02.05",
     "systemEquipStatus": 0,
     "discEquipStatus": 0,
-    "serverEquipStatus": 2,
+    "serverEquipStatus": 0,
     "alarm": 0
   },
-  "commands": [],
+  "commands": [
+    {
+      "command": "1",
+      "id": 1
+    },
+    {
+      "command": "1",
+      "id": 2
+    },
+    {
+      "command": "1",
+      "id": 3
+    }
+  ],
   "readhours": {
     "status": "OK",
     "MachineHours": 123,

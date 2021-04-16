@@ -36,9 +36,9 @@ export class BackgroundServiceService {
 
     const podsStatuses = await Promise.all(
       pods.map(async (pod) => {
-        const status = await this.podCommunicationService.ping(pod.ipAddress);
+        const ping = await this.podCommunicationService.ping(pod.ipAddress);
 
-        return { id: pod.id, status, time: new Date().getTime() };
+        return { ...pod, ...ping, time: new Date().getTime() };
       }),
     );
 

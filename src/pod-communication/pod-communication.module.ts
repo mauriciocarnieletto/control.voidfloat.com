@@ -3,6 +3,7 @@ import { PodCommunicationService } from './pod-communication.service';
 import { PodCommunicationController } from './pod-communication.controller';
 import { ConfigModule } from '@nestjs/config';
 import configuration from 'src/config/configuration';
+import { PodModule } from 'src/pod/pod.module';
 
 @Module({
   controllers: [PodCommunicationController],
@@ -14,6 +15,7 @@ import configuration from 'src/config/configuration';
     ConfigModule.forRoot({
       load: [configuration],
     }),
+    PodModule,
   ],
   providers: [PodCommunicationService],
   exports: [PodCommunicationService],

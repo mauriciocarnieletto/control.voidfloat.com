@@ -5,7 +5,6 @@ import { PodController } from './pod.controller';
 import { DatabaseModule } from 'src/database/database.module';
 import { podProviders } from './pod.providers';
 import configuration from 'src/config/configuration';
-import { PodCommunicationModule } from 'src/pod-communication/pod-communication.module';
 import { PodGateway } from './pod.gateway';
 
 @Module({
@@ -19,7 +18,6 @@ import { PodGateway } from './pod.gateway';
       load: [configuration],
     }),
     DatabaseModule,
-    PodCommunicationModule,
   ],
   providers: [...podProviders, PodService, PodGateway],
   exports: [PodService],

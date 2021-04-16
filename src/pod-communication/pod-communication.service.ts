@@ -1,10 +1,8 @@
 import { HttpService, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { CreatePodCommunicationDto } from './dto/create-pod-communication.dto';
-import { UpdatePodCommunicationDto } from './dto/update-pod-communication.dto';
+import { PodCommandDTO } from 'src/pod-configuration-commands/entities/pod-configuration-command.entity';
+import { PodService } from 'src/pod/pod.service';
 import {
-  Command,
-  Commands,
   PodScreenData,
   PingResult,
   PodConfiguration,
@@ -20,6 +18,7 @@ export class PodCommunicationService {
   constructor(
     private httpService: HttpService,
     private configService: ConfigService,
+    private podService: PodService,
   ) {
     this.init();
   }
@@ -31,26 +30,6 @@ export class PodCommunicationService {
     }>('pod');
     this.protocol = protocol;
     this.port = port;
-  }
-
-  create(createPodCommunicationDto: CreatePodCommunicationDto) {
-    return 'This action adds a new podCommunication';
-  }
-
-  findAll() {
-    return `This action returns all podCommunication`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} podCommunication`;
-  }
-
-  update(id: number, updatePodCommunicationDto: UpdatePodCommunicationDto) {
-    return `This action updates a #${id} podCommunication`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} podCommunication`;
   }
 
   getUrl(method: string, host?: string): string {
@@ -84,8 +63,12 @@ export class PodCommunicationService {
     return this.httpService.axiosRef.post(this.getUrl('setconfig'), config);
   }
 
-  async sendCommands(command: Command) {
-    return this.httpService.axiosRef.post(this.getUrl('commands'), command);
+  async sendCommandToPod(podId: string, command: PodCommandDTO) {
+    const pod = await this.podService.findOne(Number(podId));
+    return this.httpService.axiosRef.post(
+      this.getUrl('commands', pod.ipAddress),
+      command,
+    );
   }
 
   async sendEquipamentConfiguration(command: EquipamentConfiguration) {

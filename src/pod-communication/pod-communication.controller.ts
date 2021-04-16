@@ -1,34 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Param, Body, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt.guard';
+import { PodCommandDTO } from 'src/pod-configuration-commands/entities/pod-configuration-command.entity';
+
 import { PodCommunicationService } from './pod-communication.service';
-import { CreatePodCommunicationDto } from './dto/create-pod-communication.dto';
-import { UpdatePodCommunicationDto } from './dto/update-pod-communication.dto';
 
 @Controller('pod-communication')
 export class PodCommunicationController {
-  constructor(private readonly podCommunicationService: PodCommunicationService) {}
+  constructor(
+    private readonly podCommunicationService: PodCommunicationService,
+  ) {}
 
-  @Post()
-  create(@Body() createPodCommunicationDto: CreatePodCommunicationDto) {
-    return this.podCommunicationService.create(createPodCommunicationDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.podCommunicationService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.podCommunicationService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePodCommunicationDto: UpdatePodCommunicationDto) {
-    return this.podCommunicationService.update(+id, updatePodCommunicationDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.podCommunicationService.remove(+id);
+  @UseGuards(JwtAuthGuard)
+  @Post('/command/:podId')
+  executeCommand(
+    @Param('podId') podId: string,
+    @Body() command: PodCommandDTO,
+  ) {
+    return this.podCommunicationService.sendCommandToPod(podId, command);
   }
 }
