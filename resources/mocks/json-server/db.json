@@ -39,20 +39,9 @@
     "serverEquipStatus": 0,
     "alarm": 0
   },
-  "commands": [
-    {
-      "command": "1",
-      "id": 1
-    },
-    {
-      "command": "1",
-      "id": 2
-    },
-    {
-      "command": "1",
-      "id": 3
-    }
-  ],
+  "commands": {
+    "command": 1
+  },
   "readhours": {
     "status": "OK",
     "MachineHours": 123,

@@ -85,7 +85,7 @@ export class NetworkService {
   }
 
   async searchPods() {
-    const devices = await this.scannerService.scanNetwork('127.0.0.1/24');
+    const devices = await this.scannerService.scanNetwork('192.168.100.0/24');
     return devices;
   }
 }

@@ -1,0 +1,402 @@
+Comunicação feita através de verbos HTTP GET e POST.
+Os verbos GET são usados para ler dados do tanque
+Os verbos POST são usados para configurar itens do tanque
+
+Os endereços possíveis com exemplos de parametros são:
+
+post http://192.168.0.100/setconfig {
+"hour": 12, 
+"min": 30,
+"sec": 20,
+"day": 01,
+"month": 12,
+"year": 20,
+"machineState": 0,
+"sessionTime": 60,
+"initialMusicTime": 10,
+"finalMusicTime": 10,
+"ledPower": 100,
+"ledR": 255,
+"ledG": 255,
+"ledB": 255,
+"initialMusic": "Musica 1.mp3",
+"finalMusic": "Musica 2.mp3",
+"setTemp": 35.5,
+"volume": 255,
+"cooler": true,
+"rpmCooler": 450,
+"fadeOut": 4,
+"sessionDelay": 4,
+
+}
+
+post http://192.168.0.100/commands {"command":1}
+post http://192.168.0.100/commands {"command":4, "time":20}
+
+get http://192.168.0.100/
+get http://192.168.0.100/loadstatus
+get http://192.168.0.100/readhours
+get http://192.168.0.100/readmusics {"offset":0}
+get http://192.168.0.100/initialscreen
+
+
+Explicações:
+
+acessar o endereco:
+
+get http://192.168.0.100/
+retorna um json fixo com a resposta 
+{
+	"status": OK
+}
+
+
+post http://192.168.0.1/setconfig
+
+tudo que eh possivel configurar no json
+documentacao json Tanque Void
+{
+"hour": 12, 
+"min": 30,
+"sec": 20,
+"day": 01,
+"month": 12,
+"year": 20,
+"machineState": 0,
+"sessionTime": 60,
+"initialMusicTime": 10,
+"finalMusicTime": 10,
+"ledPower": 100,
+"ledR": 255,
+"ledG": 255,
+"ledB": 255,
+"initialMusic": "Musica 1.mp3",
+"finalMusic": "Musica 2.mp3",
+"setTemp": 35.5,
+"volume": 255,
+"cooler": true,
+"rpmCooler": 450,
+"fadeOut": 4,
+"sessionDelay": 4
+
+}
+
+os itens do tanque podem ser configurados de uma vez só(enviando todo o json) ou em blocos(enviando parte do json). Os blocos são:
+- Hora
+- Data
+- Config Sessao
+- Estado da maquina 
+- Configuração básica do equipamento
+
+Para enviar hora:
+- Enviar "hour" e/ou "min" e/ou "sec"
+os dados nao enviados para completar a hora serao pegos do horario atual
+hour - de 0 a 23
+min - de 0 a 59
+sec - de 0 a 59
+
+Para enviar data:
+- Enviar "day" e/ou "month" e/ou "year"
+os dados nao enviados para completar a data serao pegos da data atual
+month - de 1 a 12
+year - de 00 a 99
+day - de 1 a 31 (dependendo do mês)
+
+para alterar o estado da maquina:
+- Enviar "machineState"
+machineState - Troca a maquina de estado(indica pra qual estado vai) 0 valor varia de 0 a 6 sendo:
+	TURN_OFF - 0 
+	PRE_SESSAO - 1
+	SESSAO - 2
+	SESSAO_LIMPEZA - 3
+	SESSAO_NOTURNO - 4
+	SESSAO_REPOUSO - 5
+	DELAY_SESSAO - 6 - chamando DELAY_SESSAO na verdade se está chamando SESSAO 
+
+para configurar sessao:
+- Enviar "sessionTime" e/ou "initialMusicTime" e/ou "finalMusicTime" e/ou "ledPower" e/ou "ledR" e/ou "ledG" e/ou "ledB" e/ou "initialMusic" e/ou "finalMusic" e/ou "setTemp" e/ou "volume" e/ou "cooler" e/ou "rpmCooler" e/ou 
+"fadeOut" e/ou "sessionDelay"
+sessionTime - de 5 a 1440 minutos
+initialMusicTime - 0 a session time, onde 0 significa desabilitado
+finalMusicTime - 0 a session time, onde 0 significa desabilitado
+	o tempo somado de initial music time + final music time nao pode ser maior que session time
+ledPower - potencia da luz de led de 0 a 100 
+ledR - quanto de vermelho a cor aparecerá quando pressionar o botao de led dentro da banheira. Varia de 0 a 255
+ledG - quanto de verde a cor aparecerá quando pressionar o botao de led dentro da banheira. Varia de 0 a 255
+ledB - quanto de vermelho a cor aparecerá quando pressionar o botao de led dentro da banheira. Varia de 0 a 255
+initialMusic - string com nome da musica inicial da mesma forma como foi lido no comando get 
+finalMusic - string com nome da musica final da mesma forma como foi lido no comando get 
+setTemp - valor do setpoint de temperatura em float com um digito depois da virgula somente. De 20.0 a 37.0
+volume - seta o valor do volume durante sessao de 0 a 255
+cooler - seta se o ventilador fica ligado ou desligado durante sessao. true-ligado e false-desligado
+rpmCooler - seta a velocidade do ventilador durante sessao. de 450 a 2000.
+fadeOut - seta tempo em segundos de fade para desligar/ligar os leds quando pressionar botao dentro do tanque. De 1 a 20s
+sessionDelay - seta tempo de delay em minutos antes da sessao. De 0 a 99 minutos.
+
+
+Para configurar equipamento:
+- Enviar "pass" e ("closedLoopPh" e/ou "closedLoopCloro" e/ou "closedLoopH2O2" e/ou "closedLoopTDS" e/ou "kpPh" e/ou "kiPh" e/ou: "kdPh" e/ou 
+"kpCloro" e/ou "kiCloro" e/ou "kdCloro" e/ou "kpH2O2" e/ou "kiH2O2" e/ou "kdH2O2" e/ou "kpTDS" e/ou "kiTDS" e/ou "kdTDS" e/ou "cleaningTime" e/ou 
+"buzzer" e/ou "offsetTemp" e/ou "pHTime" e/ou "cloroTime" e/ou "h2o2Time" e/ou "tdsTime": 20
+
+post http://192.168.0.100/setequip {
+"pass": "bolinha",
+"closedLoopPh":false,
+"closedLoopCloro":false,
+"closedLoopH2O2":false,
+"closedLoopTDS":false,
+"kpPh": 20,
+"kiPh": 20,
+"kdPh": 20,
+"kpCloro": 20,
+"kiCloro": 20,
+"kdCloro": 20,
+"kpH2O2": 20,
+"kiH2O2": 20,
+"kdH2O2": 20,
+"kpTDS": 20,
+"kiTDS": 20,
+"kdTDS": 20,
+"cleaningTime": 20,
+"buzzer": true,
+"offsetTemp": -0.1,
+"pHTime": 20,
+"cloroTime": 20,
+"h2o2Time": 20,
+"tdsTime": 20,
+}
+
+
+para configuração básica do equipamento:
+- Para configurar o equipamento eh preciso enviar a senha de acesso do equipamento na chave "pass"
+- Enviar "cleaningTime" e/ou "offsetTemp" e/ou "buzzer" e/ou "pHTime" e/ou "cloroTime" e/ou "h2o2Time" e/ou "tdsTime"
+pass - senha do equipamento a ser configurado
+cleaningTime - tempo em minutos de limpeza. De 1 a 65535 minutos
+offsetTemp - seta o offset de temperatura de calibracao dos sensores. Valor em float.
+buzzer - seta se o buzzer em modo emergencia sera ligado ou nao. true-ligado e false-desligado
+pHTime - seta tempo de acionamento da bomba de pH em segundos de 1 a 65535 durante o tempo de limpeza
+cloroTime - seta tempo de acionamento da bomba de Cloro em segundos de 1 a 65535 durante o tempo de limpeza
+h2o2Time - seta tempo de acionamento da bomba de H2O2 em segundos de 1 a 65535 durante o tempo de limpeza
+tdsTime - seta tempo de acionamento da bomba de Tds em segundos de 1 a 65535 durante o tempo de limpeza
+closedLoopPh - define se o acionamento da bomba de pH eh em malha aberta ou malha fechada. true - malha fechada, false - malha aberta
+closedLoopCloro - define se o acionamento da bomba de cloro eh em malha aberta ou malha fechada. true - malha fechada, false - malha aberta
+closedLoopH2O2 - define se o acionamento da bomba de H2O2 eh em malha aberta ou malha fechada. true - malha fechada, false - malha aberta
+closedLoopTDS - define se o acionamento da bomba de TDS eh em malha aberta ou malha fechada. true - malha fechada, false - malha aberta
+kpPh - Valor do coeficiente kp do PID de acionamento da bomba de pH. De 0 a 65535
+kiPh - Valor do coeficiente ki do PID de acionamento da bomba de pH. De 0 a 65535
+kdPh - Valor do coeficiente kd do PID de acionamento da bomba de pH. De 0 a 65535
+kpCloro - Valor do coeficiente kp do PID de acionamento da bomba de cloro. De 0 a 65535
+kiCloro - Valor do coeficiente ki do PID de acionamento da bomba de cloro. De 0 a 65535
+kdCloro - Valor do coeficiente kd do PID de acionamento da bomba de cloro. De 0 a 65535
+kpH2O2 - Valor do coeficiente kp do PID de acionamento da bomba de H2O2. De 0 a 65535
+kiH2O2 - Valor do coeficiente ki do PID de acionamento da bomba de H2O2. De 0 a 65535
+kdH2O2 - Valor do coeficiente kd do PID de acionamento da bomba de H2O2. De 0 a 65535
+kpTDS - Valor do coeficiente kp do PID de acionamento da bomba de TDS. De 0 a 65535
+kiTDS - Valor do coeficiente ki do PID de acionamento da bomba de TDS. De 0 a 65535
+kdTDS - Valor do coeficiente kd do PID de acionamento da bomba de TDS. De 0 a 65535
+
+
+Para ler o status das cargas acessar:
+acessar usando o GET o endereco http://192.168.0.100/loadstatus
+Retorno json:
+{
+"status":"OK",
+"heater":true, 
+"UV":true,
+"INV":true,
+"cooler":true, 
+"coolerRPM":true,
+"som":true;
+"leds":true,
+"phPump":true, 
+"cloroPump":true,
+"h2o2Pump":true, 
+"tdsPump":true,
+}
+
+Para ler as horas de uso das cargas acessar:
+acessar usando o GET o endereco http://192.168.0.100/readhours
+Retorno json:
+{
+"status":"OK",
+"MachineHours":123,
+"UVHours":234,
+"HeaterHours":456,
+"FluxPumpHours":567,
+}
+
+em caso de erro de leitura a resposta será
+Retorno json:
+{
+"status":"Timeout",
+}
+
+Para ler as primeiras 8 musicas do diretório MP3 do SD card acessar:
+acessar usando o GET o endereco http://192.168.0.100/readmusics {"offset":0}
+Retorno json:
+{
+"status":"OK",
+"NumMusics": 8,
+"Mus1":"Musica1.mp3",
+"Mus2":"Musica2.mp3",
+"Mus3":"Musica3.mp3",
+"Mus4":"Musica4.mp3",
+"Mus5":"Musica5.mp3",
+"Mus6":"Musica6.mp3",
+"Mus7":"Musica7.mp3",
+"Mus8":"Musica8.mp3"
+}
+// Caso retorne 8 musicas, significa que tem mais musicas a serem lidas. O comando deve ser repetido com offset do numero de musicas lidas. Ex:
+na primeira leitura o offset eh 0, na segunda o offset eh 8, na terceira o offset eh 16 e assim por diante. Pra saber se acabaram as musicas, basta retornar menos que 8 musicas.
+
+NumMusics - numero de musicas que foram lidas nesta rodada. Limite 8 titulos de musicas por rodada.
+Mus1 - nome da musica1 no cartao SD
+Mus2 - nome da musica2 no cartao SD
+Mus3 - nome da musica3 no cartao SD
+Mus4 - nome da musica4 no cartao SD
+Mus5 - nome da musica5 no cartao SD
+Mus6 - nome da musica6 no cartao SD
+Mus7 - nome da musica7 no cartao SD
+Mus8 - nome da musica8 no cartao SD
+
+Para ler os dados da tela inicial:
+acessar usando GET o endereço http://192.168.0.100/initialscreen
+Retorno json:
+{
+"status": "OK",
+"sessionStatus": 1,
+"remainingTime": "05:00",
+"actualTemperature": 35.5,
+"cooler": true,
+"coolerRPM": 2000,
+"initialMusicFile": "Inicial.mp3", 
+"finalMusicFile": "Final.mp3", 
+"actualTime": "11:35",
+"fwVersion": "V00.02.05",
+"systemEquipStatus": 0,
+"discEquipStatus": 0,
+"serverEquipStatus": 2,
+"alarm": 0,
+}
+
+"sessionStatus": mesma explicação da chave machineState,
+"remainingTime": string com o tempo restante do estado ou --:-- quando não disponível,
+"actualTemperature": Temperatura atual da agua,
+"cooler": true se ligado e false se desligado,
+"coolerRPM": velocidade da ventoinha de 450 a 2000,
+"initialMusicFile": String com o nome da musica inicial, 
+"finalMusicFile": String com o nome da musica final, 
+"actualTime": String com o horário atual do equipamento,
+"fwVersion": String com a versao de firmware,
+"systemEquipStatus": 0 - OK, 1 - Atenção, 2 - Problema no sistema que nao tem a ver com disco e conexao com servidor,
+"discEquipStatus": 0 - OK, 1 - Atenção, 2 - Problema no SD,
+"serverEquipStatus": 0 - OK, 1 - Atenção, 2 - Problema na conexao com o servidor,
+"alarm": array de bits de alarmes,
+
+Abaixo temos a lista de cada bit que pode ser setado ou resetado
+	TEMPERATURE1MAIORQUETEMPERATURE2,	//BIT0 - Temperatura sensor 1 maior que temperatura sensor 2 alem do limite
+	TEMPERATURE2MAIORQUETEMPERATURE1,	//BIT1 - Temperatura sensor 2 maior que temperatura sensor 1 alem do limite
+	VS1053_NOT_PRESENT,					//BIT2 - ChipVS1053(MP3 player) não está respondendo
+	SD_FAILED,							//BIT3 - SD card não está respondendo
+	VENTILADOR_ERROR,					//BIT4 - Ventilador parado quando deveria estar em funcionamento
+	TEMPERATURE1OPENED,					//BIT5 - Sensor de temperatura 1 em aberto
+	TEMPERATURE1SHORTED,				//BIT6 - Sensor de temperatura 1 em curto 
+	TEMPERATURE2OPENED,					//BIT7 - Sensor de temperatura 2 em aberto
+	TEMPERATURE2SHORTED,				//BIT8 - Sensor de temperatura 2 em curto		
+	LEDSOPENED,							//BIT9 - Leds em aberto		
+	LEDSSHORTED,						//BIT10 - Leds em curto		
+	LEDSOVERLOADED,						//BIT11 - Leds em sobrecarga		
+	EMERGENCIA,							//BIT12 - Botao de emergencia		
+
+
+comandos:
+- Botao Luz pulso curto
+- Botao Luz pulso longo
+- Botao Som pulso curto
+- Acionar bomba PH (tempo em segundos)
+- Acionar bomba Cloro (tempo em segundos)
+- Acionar bomba H2O2 (tempo em segundos)
+- Acionar bomba TDS (tempo em segundos)
+- Desligar buzzer de uma emergencia acontecida
+
+- Botao Luz pulso curto
+acessar usando o POST o endereco http://192.168.0.100/commands {"command":1}
+
+- Botao Luz pulso longo
+acessar usando o POST o endereco http://192.168.0.100/commands {"command":2}
+
+- Botao Som pulso curto
+acessar usando o POST o endereco http://192.168.0.100/commands {"command":3}
+
+- Acionar bomba PH (tempo em segundos)
+acessar usando o POST o endereco http://192.168.0.100/commands {"command":4, "time":20}
+command - comando a ser executado
+time - tempo em segundos de acionamento da bomba de 1 a 65535. Se enviado 0 desliga a bomba instantaneamente
+
+- Acionar bomba Cloro (tempo em segundos)
+acessar usando o POST o endereco http://192.168.0.100/commands {"command":5, "time":20}
+command - comando a ser executado
+time - tempo em segundos de acionamento da bomba de 1 a 65535. Se enviado 0 desliga a bomba instantaneamente
+
+- Acionar bomba H2O2 (tempo em segundos)
+acessar usando o POST o endereco http://192.168.0.100/commands {"command":6, "time":20}
+command - comando a ser executado
+time - tempo em segundos de acionamento da bomba de 1 a 65535. Se enviado 0 desliga a bomba instantaneamente
+
+- Acionar bomba TDS (tempo em segundos)
+acessar usando o POST o endereco http://192.168.0.100/commands {"command":7, "time":20}
+command - comando a ser executado
+time - tempo em segundos de acionamento da bomba de 1 a 65535. Se enviado 0 desliga a bomba instantaneamente
+
+- Desligar buzzer de uma emergencia acontecida
+acessar usando POST o endereço  http://192.168.0.100/commands {"command":8}
+
+
+
+Todos os comandos retornam uma chave "status" mostrando o que aconteceu na operação. Os retorno possíveis são:
+retorno dos comandos em caso de sucesso:
+{
+"status":"OK"
+}
+
+retorno dos comandos em caso de problema de timeout na execução:
+{
+"status":"Timeout"
+}
+
+retorno dos comandos em caso de problema no formato do json (falta de {)
+{
+"status":"Wrong json Format"
+}
+
+em caso de erro de deserializacao do json, o sistema retorna a string do erro
+{
+"status":"IncompleteInput"
+}
+ou
+{
+"status":"InvalidInput"
+}
+ou
+{
+"status":"NoMemory"
+}
+ou
+{
+"status":"NotSupported"
+}
+ou
+{
+"status":"TooDeep"
+}
+
+Caso alguma chave não seja validada, então a chave será retornada com a resposta "Invalid". Ex:
+{
+"machineState":"Invalid value"
+}
+
+No caso de data e hora a validação é feita em grupo e em caso de falha a chave retornada é 
+"time":"invalid" em caso de qualquer valor de hora invalido ou 
+"date":"invalid" em caso de qualquer valor de data invalido
+
+

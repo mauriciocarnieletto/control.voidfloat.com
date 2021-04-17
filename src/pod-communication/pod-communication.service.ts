@@ -29,11 +29,13 @@ export class PodCommunicationService {
       protocol: string;
     }>('pod');
     this.protocol = protocol;
-    this.port = port;
+    this.port = '80';
   }
 
   getUrl(method: string, host?: string): string {
-    return `${this.protocol}://${host || this.host}:${this.port}/${method}`;
+    return `${this.protocol}://${host || this.host}${
+      this.port.toString() === '80' ? '' : `:${this.port}`
+    }/${method}`;
   }
 
   async ping(host?: string) {
@@ -63,12 +65,25 @@ export class PodCommunicationService {
     return this.httpService.axiosRef.post(this.getUrl('setconfig'), config);
   }
 
-  async sendCommandToPod(podId: string, command: PodCommandDTO) {
+  async sendCommandToPod(podId: string, commandData: PodCommandDTO) {
+    const { command, time } = commandData;
+    const body: { command: number; time?: number } = {
+      command: Number(command),
+    };
+    if (time) body.time = Number(time);
+
     const pod = await this.podService.findOne(Number(podId));
-    return this.httpService.axiosRef.post(
-      this.getUrl('commands', pod.ipAddress),
-      command,
-    );
+    const response = await this.httpService.axiosRef({
+      method: 'POST',
+      url: this.getUrl('commands', pod.ipAddress),
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      data: body,
+    });
+
+    return response.data;
   }
 
   async sendEquipamentConfiguration(command: EquipamentConfiguration) {

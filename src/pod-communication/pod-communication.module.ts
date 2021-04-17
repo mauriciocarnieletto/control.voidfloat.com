@@ -11,6 +11,7 @@ import { PodModule } from 'src/pod/pod.module';
     HttpModule.register({
       timeout: 5000,
       maxRedirects: 5,
+      headers: { 'Content-type': 'application/json' },
     }),
     ConfigModule.forRoot({
       load: [configuration],

@@ -43,7 +43,11 @@ export class ScannerService {
   async filterPodsFromDevices(devices: DeviceI[]) {
     return Promise.all(
       devices.map(({ ip }) => this.podCommunicationService.ping(ip)),
-    ).then((pingedDevices) => pingedDevices.filter((device) => device.isPod));
+    ).then((pingedDevices) =>
+      pingedDevices.filter(
+        (device) => device.isPod && device.screen && device.screen.status,
+      ),
+    );
   }
 
   async scanNetwork(subnet: string) {
