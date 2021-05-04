@@ -20,6 +20,7 @@ import { BackgroundServiceModule } from './background-service/background-service
 import { PodGateway } from './pod/pod.gateway';
 import configuration from './config/configuration';
 import { join } from 'path';
+import { PodActionsModule } from './pod-actions/pod-actions.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { join } from 'path';
     PodConfigurationCommandsModule,
     PodCommunicationModule,
     BackgroundServiceModule,
+    PodActionsModule,
   ],
   controllers: [AppController],
   providers: [AppService, PodGateway],

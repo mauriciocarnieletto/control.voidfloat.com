@@ -1,6 +1,7 @@
 import { HttpService, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PodCommandDTO } from 'src/pod-configuration-commands/entities/pod-configuration-command.entity';
+import { Pod } from 'src/pod/entities/pod.entity';
 import { PodService } from 'src/pod/pod.service';
 import {
   PodScreenData,
@@ -32,13 +33,14 @@ export class PodCommunicationService {
     this.port = '80';
   }
 
-  getUrl(method: string, host?: string): string {
+  getUrl(method: string, host?: string, port?: string): string {
+    const thisPort = port || this.port.toString();
     return `${this.protocol}://${host || this.host}${
-      this.port.toString() === '80' ? '' : `:${this.port}`
+      thisPort === '80' ? '' : `:${thisPort}`
     }/${method}`;
   }
 
-  async ping(host?: string) {
+  async pingHost(host?: string) {
     try {
       const pingResponse = await this.httpService.axiosRef.get<PingResult>(
         this.getUrl('initialscreen', host),
@@ -57,6 +59,29 @@ export class PodCommunicationService {
       };
     } catch (error) {
       console.log(`Host ${host} is not a pod.`);
+      return { isPod: false, host };
+    }
+  }
+
+  async pingPod({ ipAddress: host, port }: Pod) {
+    try {
+      const pingResponse = await this.httpService.axiosRef.get<PingResult>(
+        this.getUrl('initialscreen', host, port),
+      );
+      const statusResponse = await this.httpService.axiosRef.get<PingResult>(
+        this.getUrl('loadstatus', host, port),
+      );
+      return {
+        isPod: true,
+        hostname: host,
+        model: 'Void One',
+        ipAddress: host,
+        screen: pingResponse.data,
+        status: statusResponse.data,
+        connection: { isConnected: true },
+      };
+    } catch (error) {
+      console.log(`Pod ${host} did not respond.`);
       return { isPod: false, host };
     }
   }

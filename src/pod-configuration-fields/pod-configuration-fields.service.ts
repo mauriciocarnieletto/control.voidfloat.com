@@ -10,6 +10,7 @@ export class PodConfigurationFieldsService {
     @Inject('POD_CONFIGURATION_FIELDS_REPOSITORY')
     private podFieldConfigurationRepository: Repository<PodConfigurationField>,
   ) {}
+
   create(createPodConfigurationFieldDto: CreatePodConfigurationFieldDto) {
     const podConfigurationField = new PodConfigurationField();
     Object.assign(podConfigurationField, { ...createPodConfigurationFieldDto });

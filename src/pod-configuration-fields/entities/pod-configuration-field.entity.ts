@@ -9,7 +9,7 @@ export class PodConfigurationField {
   @Column({ length: 100 })
   key: string;
   @Column({ length: 100 })
-  value: string;
+  defaultValue: string;
   @Column({ length: 100 })
   name: string;
   @Column({ length: 500 })

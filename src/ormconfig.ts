@@ -6,6 +6,7 @@ import { User } from 'src/users/entities/user.entity';
 import { ServerConfiguration } from 'src/server-configuration/entities/server-configuration.entity';
 import { PodConfigurationField } from 'src/pod-configuration-fields/entities/pod-configuration-field.entity';
 import { PodConfigurationCommand } from 'src/pod-configuration-commands/entities/pod-configuration-command.entity';
+import { PodActions } from './pod-actions/entities/pod-action.entity';
 
 export const config: TypeOrmModuleOptions = {
   type: 'sqlite',
@@ -13,6 +14,7 @@ export const config: TypeOrmModuleOptions = {
   entities: [
     Client,
     Pod,
+    PodActions,
     User,
     ServerConfiguration,
     PodConfigurationField,

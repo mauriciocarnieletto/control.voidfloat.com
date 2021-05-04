@@ -17,6 +17,9 @@ export class Pod {
   @Column()
   ipAddress: string;
 
+  @Column({ nullable: true })
+  port: string;
+
   @Column()
   hostname: string;
 
