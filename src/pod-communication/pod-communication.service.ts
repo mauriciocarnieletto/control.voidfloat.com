@@ -1,8 +1,10 @@
-import { HttpService, Injectable } from '@nestjs/common';
+import { HttpService, Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PodCommandDTO } from 'src/pod-configuration-commands/entities/pod-configuration-command.entity';
 import { Pod } from 'src/pod/entities/pod.entity';
 import { PodService } from 'src/pod/pod.service';
+import { ServerConfiguration } from 'src/server-configuration/entities/server-configuration.entity';
+import { Repository } from 'typeorm';
 import {
   PodScreenData,
   PingResult,
@@ -20,17 +22,20 @@ export class PodCommunicationService {
     private httpService: HttpService,
     private configService: ConfigService,
     private podService: PodService,
+    @Inject('SERVER_CONFIGURATION_REPOSITORY')
+    private serverConfigurationRepository: Repository<ServerConfiguration>,
   ) {
     this.init();
   }
 
-  init() {
+  async init() {
     const { port, protocol } = this.configService.get<{
       port: string;
       protocol: string;
     }>('pod');
+    const configuration = await this.serverConfigurationRepository.findOne();
     this.protocol = protocol;
-    this.port = '80';
+    this.port = configuration?.podPort.toString() || '80';
   }
 
   getUrl(method: string, host?: string, port?: string): string {
@@ -84,6 +89,13 @@ export class PodCommunicationService {
       console.log(`Pod ${host} did not respond.`);
       return { isPod: false, host };
     }
+  }
+
+  async executeAction(podId: string, actionId: string) {
+    const actions = await import('../../resources/parameters/pod-actions.json');
+    const action = actions.find((ac) => ac.id === Number(actionId));
+
+    return action;
   }
 
   async setConfig(config: PodConfiguration) {

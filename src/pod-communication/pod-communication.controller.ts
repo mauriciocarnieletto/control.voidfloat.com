@@ -11,6 +11,15 @@ export class PodCommunicationController {
   ) {}
 
   @UseGuards(JwtAuthGuard)
+  @Post('/action/:podId/:actionId')
+  executeAction(
+    @Param('podId') podId: string,
+    @Param('actionId') actionId: string,
+  ) {
+    return this.podCommunicationService.executeAction(podId, actionId);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Post('/command/:podId')
   executeCommand(
     @Param('podId') podId: string,

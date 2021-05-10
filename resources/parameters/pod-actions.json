@@ -1,0 +1,140 @@
+[
+  {
+    "id": 1,
+    "key": "DESLIGAR",
+    "name": "Desligar",
+    "type": "STATE",
+    "data": [
+      {
+        "action": "setconfig",
+        "data": {
+          "machineState": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "name": "Pre Sessão",
+    "key": "PRE_SESSAO",
+    "type": "STATE",
+    "data": [
+      {
+        "action": "setconfig",
+        "data": {
+          "machineState": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Em Sessão",
+    "key": "SESSAO",
+    "type": "STATE",
+    "parameters": [9, 10, 11, 16, 17, 19, 21],
+    "data": [
+      {
+        "action": "setconfig",
+        "data": {
+          "machineState": 1
+        }
+      },
+      {
+        "action": "wait",
+        "data": 5000
+      },
+      {
+        "action": "setconfig",
+        "parameters": [9, 10, 11, 16, 17, 19, 21],
+        "data": {}
+      },
+      {
+        "action": "wait",
+        "data": 5000
+      },
+      {
+        "action": "setconfig",
+        "data": {
+          "machineState": 2
+        }
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "key": "LIMPEZA",
+    "name": "Limpeza",
+    "type": "STATE",
+    "data": [
+      {
+        "action": "setconfig",
+        "data": {
+          "machineState": 3
+        }
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "key": "MODO_NOTURNO",
+    "name": "Noturno",
+    "type": "STATE",
+    "data": [
+      {
+        "action": "setconfig",
+        "data": {
+          "machineState": 4
+        }
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "key": "REPOUSO",
+    "name": "Repouso",
+    "type": "STATE",
+    "data": [
+      {
+        "action": "setconfig",
+        "data": {
+          "machineState": 5
+        }
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "key": "ENTRE_SESSOES",
+    "name": "Entre Sessões",
+    "type": "STATE",
+    "data": [
+      {
+        "action": "setconfig",
+        "data": {
+          "sessionDelay": 10
+        }
+      },
+      {
+        "action": "setconfig",
+        "data": {
+          "machineState": 6
+        }
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "key": "DESLIGAR_ALARME",
+    "name": "Desligar Alarme",
+    "type": "CONSTANT",
+    "data": [
+      {
+        "action": "commands",
+        "data": {
+          "command": 8
+        }
+      }
+    ]
+  }
+]

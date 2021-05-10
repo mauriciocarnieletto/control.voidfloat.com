@@ -1,13 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import * as os from 'os';
 import * as network from 'network';
 import { ScannerService } from './scanner/scanner.service';
 import { netmaskTable } from './constants';
 import { NetworkInterface } from './interfaces';
+import { Repository } from 'typeorm';
+import { ServerConfiguration } from 'src/server-configuration/entities/server-configuration.entity';
 
 @Injectable()
 export class NetworkService {
-  constructor(private scannerService: ScannerService) {}
+  constructor(
+    private scannerService: ScannerService,
+    @Inject('SERVER_CONFIGURATION_REPOSITORY')
+    private serverConfigurationRepository: Repository<ServerConfiguration>,
+  ) {}
 
   getSSHPort() {
     return process.env.SSH_PORT;
@@ -85,7 +91,8 @@ export class NetworkService {
   }
 
   async searchPods() {
-    const devices = await this.scannerService.scanNetwork('192.168.100.0/24');
+    const configuration = await this.serverConfigurationRepository.findOne();
+    const devices = await this.scannerService.scanNetwork(configuration.subnet);
     return devices;
   }
 }

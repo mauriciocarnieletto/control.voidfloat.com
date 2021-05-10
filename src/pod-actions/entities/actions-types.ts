@@ -1,8 +1,7 @@
 export enum ActionTypes {
-  COMMAND = 'COMMAND',
-  SETEQUIP = 'SETEQUIP',
-  SETCONFIG = 'SETCONFIG',
-  MULTI = 'MULTI',
+  STATE = 'STATE',
+  CONSTANT = 'CONSTANT',
+  CRON = 'CRON',
 }
 
 export type ActionType = ActionTypes;
