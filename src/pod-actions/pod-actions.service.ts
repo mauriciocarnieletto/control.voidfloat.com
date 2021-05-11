@@ -15,12 +15,15 @@ export class PodActionsService {
     return 'This action adds a new podAction';
   }
 
-  findAll() {
-    return `This action returns all podActions`;
+  async findAll() {
+    const actions = await import('../../resources/parameters/pod-actions.json');
+
+    return actions;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} podAction`;
+  async findOne(id: number) {
+    const actions = await import('../../resources/parameters/pod-actions.json');
+    return actions.filter((ac) => ac.id);
   }
 
   update(id: number, updatePodActionDto: UpdatePodActionDto) {

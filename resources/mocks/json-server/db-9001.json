@@ -1,27 +1,6 @@
 {
   "setconfig": {
-    "hour": 12,
-    "min": 30,
-    "sec": 20,
-    "day": 1,
-    "month": 12,
-    "year": 20,
-    "machineState": 0,
-    "sessionTime": 60,
-    "initialMusicTime": 10,
-    "finalMusicTime": 10,
-    "ledPower": 100,
-    "ledR": 255,
-    "ledG": 255,
-    "ledB": 255,
-    "initialMusic": "Musica 1.mp3",
-    "finalMusic": "Musica 2.mp3",
-    "setTemp": 35.5,
-    "volume": 255,
-    "cooler": true,
-    "rpmCooler": 450,
-    "fadeOut": 4,
-    "sessionDelay": 4
+    "machineState": 2
   },
   "initialscreen": {
     "status": "OK",

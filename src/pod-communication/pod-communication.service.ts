@@ -1,5 +1,6 @@
 import { HttpService, Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { AxiosResponse } from 'axios';
 import { PodCommandDTO } from 'src/pod-configuration-commands/entities/pod-configuration-command.entity';
 import { Pod } from 'src/pod/entities/pod.entity';
 import { PodService } from 'src/pod/pod.service';
@@ -91,15 +92,43 @@ export class PodCommunicationService {
     }
   }
 
-  async executeAction(podId: string, actionId: string) {
-    const actions = await import('../../resources/parameters/pod-actions.json');
-    const action = actions.find((ac) => ac.id === Number(actionId));
+  async treatePodResponse(response: AxiosResponse<any>) {
+    if (response.status === 200) return { status: 'ok' };
 
-    return action;
+    return { status: 'error' };
   }
 
-  async setConfig(config: PodConfiguration) {
-    return this.httpService.axiosRef.post(this.getUrl('setconfig'), config);
+  async executeAction(podId: string, actionId: string) {
+    const actions = await import('../../resources/parameters/pod-actions.json');
+    const pod = await this.podService.findOne(Number(podId));
+    const action = actions.find((ac) => ac.id === Number(actionId));
+    const responses = [];
+
+    for (const { action: operation, data } of action.data) {
+      console.log(operation);
+      if (operation === 'wait' && !Number.isNaN(data)) {
+        await new Promise((resolve) => setTimeout(resolve, Number(data)));
+      }
+      if (operation === 'setconfig') {
+        responses.push(await this.setConfig(pod, data as PodConfiguration));
+      }
+      if (operation === 'command') {
+        responses.push(
+          await this.sendCommandToPod(podId, data as PodCommandDTO),
+        );
+      }
+    }
+
+    return responses;
+  }
+
+  async setConfig(pod: Pod, config: PodConfiguration) {
+    return this.treatePodResponse(
+      await this.httpService.axiosRef.post(
+        this.getUrl('setconfig', pod.hostname, pod.port),
+        config,
+      ),
+    );
   }
 
   async sendCommandToPod(podId: string, commandData: PodCommandDTO) {
@@ -120,7 +149,7 @@ export class PodCommunicationService {
       data: body,
     });
 
-    return response.data;
+    return this.treatePodResponse(response.data);
   }
 
   async sendEquipamentConfiguration(command: EquipamentConfiguration) {
