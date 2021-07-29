@@ -93,19 +93,22 @@ export class PodCommunicationService {
   }
 
   async treatePodResponse(response: AxiosResponse<any>) {
-    if (response.status === 200) return { status: 'ok' };
+    if ([200, 201].includes(response.status)) return { status: 'ok' };
 
-    return { status: 'error' };
+    throw new Error(
+      `Não foi possível executar o comando na pod. Status ${
+        response.status
+      } ${JSON.stringify(response.data)}`,
+    );
   }
 
-  async executeAction(podId: string, actionId: string) {
+  async executeAction(podId: string, actionId: string, params?: any) {
     const actions = await import('../../resources/parameters/pod-actions.json');
     const pod = await this.podService.findOne(Number(podId));
     const action = actions.find((ac) => ac.id === Number(actionId));
     const responses = [];
 
-    for (const { action: operation, data } of action.data) {
-      console.log(operation);
+    for (const { action: operation, data } of params || action.data) {
       if (operation === 'wait' && !Number.isNaN(data)) {
         await new Promise((resolve) => setTimeout(resolve, Number(data)));
       }
